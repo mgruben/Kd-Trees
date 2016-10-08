@@ -66,6 +66,9 @@ public class PointSET {
      * since the documentation of algs4.SET explicitly states:
      * "Adds the key to this set (if it is not already present)"
      * 
+     * In the worst case, this implementation takes time proportional to the
+     * logarithm of the number of points in the set.
+     * 
      * @param p the point to add
      * @throws NullPointerException if {@code p} is {@code null}
      */
@@ -77,6 +80,10 @@ public class PointSET {
     
     /**
      * Does the set contain point p?
+     * 
+     * In the worst case, this implementation takes time proportional to the
+     * logarithm of the number of points in the set.
+     * 
      * @param p the point to look for
      * @return {@code true} if the SET contains point p;
      *         {@code false} otherwise
@@ -97,6 +104,10 @@ public class PointSET {
     
     /**
      * All points that are inside the rectangle.
+     * 
+     * In the worst case, this implementation takes time proportional to the
+     * number of points in the set.
+     * 
      * @param rect
      * @return
      * @throws NullPointerException if {@code rect} is {@code null}
@@ -108,6 +119,10 @@ public class PointSET {
     
     /**
      * A nearest neighbor in the set to point p; null if the set is empty.
+     * 
+     * In the worst case, this implementation takes time proportional to the
+     * number of points in the set.
+     * 
      * @param p the point from which to search for a neighbor
      * @return the nearest neighbor to the point p if the set contains at least
      *         two points, {@code null} otherwise.
