@@ -36,11 +36,14 @@ import edu.princeton.cs.algs4.Stack;
  */
 public class KdTree {
     private Node root;
+    private int size;
     
     /**
      * Construct an empty set of points.
      */
-    public KdTree() {}
+    public KdTree() {
+        size = 0;
+    }
     
     /**
      * Is the set empty?
@@ -62,7 +65,7 @@ public class KdTree {
      * @return the number of points in the set.
      */
     public int size() {
-        return rb.size();
+        return size;
     }
     
     /**
