@@ -186,14 +186,25 @@ public class KdTree {
         if (rb.isEmpty()) return null;
     }
     
-    private static class Node {
-        private Point2D p;      // the point
-        private RectHV rect;    // the axis-aligned rectangle corresponding to this node
-        private Node lb;        // the left/bottom subtree
-        private Node rt;        // the right/top subtree
+    private static class Node implements Comparable<Node> {
+        
+        // the point
+        private Point2D p;
+        
+        // the axis-aligned rectangle corresponding to this node
+        private RectHV rect;
+        
+        // the left/bottom subtree
+        private Node lb;
+        
+        // the right/top subtree
+        private Node rt;
+        
         private Node(Point2D p) {
             this.p = p;
         }
+        
+        
     }
     
     /**
