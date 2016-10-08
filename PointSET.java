@@ -16,7 +16,14 @@
  */
 
 /**
- *
+ * This mutable data type represents a set of points in the "Unit Square".
+ * 
+ * Its representation depends on a Red-Black (balanced) Binary Search Tree,
+ * hence O(log n) is expected for Searching, Inserting, and Deleting.
+ * 
+ * This particular implementation uses algs4.SET, although notably the same
+ * implementation could be achieved through java.util.TreeSet.
+ * 
  * @author Michael <GrubenM@GMail.com>
  */
 public class PointSET {
