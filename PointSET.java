@@ -141,17 +141,34 @@ public class PointSET {
     /**
      * A nearest neighbor in the set to point p; null if the set is empty.
      * 
-     * In the worst case, this implementation takes time proportional to the
-     * number of points in the set.
+     * In the worst (and best) case, this implementation takes time
+     * proportional to the number of points in the set.
      * 
      * @param p the point from which to search for a neighbor
-     * @return the nearest neighbor to the point p if the set contains at least
-     *         two points, {@code null} otherwise.
+     * @return the nearest neighbor to the given point p,
+     *         {@code null} otherwise.
      * @throws NullPointerException if {@code p} is {@code null}
      */
     public Point2D nearest(Point2D p) {
         if (p == null) throw new java.lang.NullPointerException
             ("called contains() with a null Point2D");
+        
+        if (rb.isEmpty()) return null;
+        
+        // Initialize loop variables
+        Point2D closestPoint = null; // null initialization required by Java?
+        double closestDistance = Double.MAX_VALUE;
+        
+        // Touch every point to see which is the closest to the given point p
+        for (Point2D point: rb) {
+            double currentDistance = p.distanceTo(point);
+            if (currentDistance < closestDistance) {
+                closestDistance = currentDistance;
+                closestPoint = point;
+            }
+        }
+        
+        return closestPoint;
     }
     
     /**
