@@ -45,10 +45,11 @@ public class PointSET {
     
     /**
      * Is the set empty?
-     * @return
+     * @return {@code true} if this SET is empty;
+     *         {@code false} otherwise
      */
     public boolean isEmpty() {
-        
+        return rb.isEmpty();
     }
     
     /**
