@@ -29,6 +29,8 @@ import edu.princeton.cs.algs4.SET;
  * This particular implementation uses algs4.SET, although notably the same
  * implementation could be achieved through java.util.TreeSet.
  * 
+ * More specifically, algs4.SET is a wrapper around java.util.TreeSet.
+ * 
  * @author Michael <GrubenM@GMail.com>
  */
 public class PointSET {
