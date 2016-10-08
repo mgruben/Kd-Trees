@@ -35,7 +35,7 @@ import edu.princeton.cs.algs4.Stack;
  * @author Michael <GrubenM@GMail.com>
  */
 public class KdTree {
-    private SET<Node> rb;
+    private Node root;
     
     /**
      * Construct an empty set of points.
@@ -187,7 +187,7 @@ public class KdTree {
         if (rb.isEmpty()) return null;
     }
     
-    private static class Node implements Comparable<Node> {
+    private static class Node {
         
         // the point
         private Point2D p;
