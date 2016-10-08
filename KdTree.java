@@ -121,7 +121,11 @@ public class KdTree {
     public void insert(Point2D p) {
         if (p == null) throw new java.lang.NullPointerException
             ("called insert() with a null Point2D");
-        root = insert(root, p, 0);
+        root = insert(root, p, true);
+    }
+    
+    private Node insert(Node n, Point2D p, boolean evenLevel) {
+        if (n == null) return new Node(p, evenLevel);
     }
     
     /**
@@ -208,8 +212,11 @@ public class KdTree {
         // the right/top subtree
         private Node rt;
         
-        private Node(Point2D p) {
+        private boolean evenLevel;
+        
+        private Node(Point2D p, boolean evenLevel) {
             this.p = p;
+            this.evenLevel = evenLevel;
         }
         
         
