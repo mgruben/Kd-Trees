@@ -126,6 +126,21 @@ public class KdTree {
     
     private Node insert(Node n, Point2D p, boolean evenLevel) {
         if (n == null) return new Node(p, evenLevel);
+        
+        double cmp;
+        if (evenLevel) {
+            cmp = p.x() - n.p.x();
+        }
+        else cmp = p.y() - n.p.y();
+        
+        /**
+         * In subsequent levels, the orientation is orthogonal
+         * to the current orientation.
+         */
+        if (cmp < 0) n.lb = insert(n.lb, p, !evenLevel);
+        else if (cmp > 0) n.rt = insert(n.rt, p, !evenLevel);
+        else n.p = p;
+        return n;
     }
     
     /**
