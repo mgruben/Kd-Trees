@@ -92,6 +92,10 @@ public class PointSET {
      * 
      * In the worst case, this implementation takes time proportional to the
      * logarithm of the number of points in the set.
+     * This is because, in the worst case, algs4.SET.contains() takes
+     * logarithmic time.
+     * That is because, in the worst case, java.util.TreeSet.contains() takes
+     * logarithmic time.
      * 
      * @param p the point to look for
      * @return {@code true} if the SET contains point p;
