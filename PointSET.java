@@ -121,8 +121,8 @@ public class PointSET {
      * In the worst (and best) case, this implementation takes time
      * proportional to the number of points in the set.
      * 
-     * @param rect
-     * @return
+     * @param rect the RectHV within which to look for points
+     * @return an iterator to all of the points within the given RectHV
      * @throws NullPointerException if {@code rect} is {@code null}
      */
     public Iterable<Point2D> range(RectHV rect) {
