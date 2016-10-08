@@ -34,7 +34,7 @@ import edu.princeton.cs.algs4.SET;
  * @author Michael <GrubenM@GMail.com>
  */
 public class PointSET {
-    private SET rb;
+    private SET<Point2D> rb;
     
     /**
      * Construct an empty set of points.
@@ -80,7 +80,7 @@ public class PointSET {
      * Draw all points to standard draw.
      */
     public void draw() {
-        
+        for (Point2D p: rb) p.draw();
     }
     
     /**
