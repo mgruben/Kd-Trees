@@ -20,14 +20,75 @@
  * @author Michael <GrubenM@GMail.com>
  */
 public class PointSET {
-   public         PointSET()                               // construct an empty set of points 
-   public           boolean isEmpty()                      // is the set empty? 
-   public               int size()                         // number of points in the set 
-   public              void insert(Point2D p)              // add the point to the set (if it is not already in the set)
-   public           boolean contains(Point2D p)            // does the set contain point p? 
-   public              void draw()                         // draw all points to standard draw 
-   public Iterable<Point2D> range(RectHV rect)             // all points that are inside the rectangle 
-   public           Point2D nearest(Point2D p)             // a nearest neighbor in the set to point p; null if the set is empty 
-
-   public static void main(String[] args)                  // unit testing of the methods (optional) 
+    
+    /**
+     * Construct an empty set of points.
+     */
+    public PointSET() {
+       
+    }
+    
+    /**
+     * Is the set empty?
+     * @return
+     */
+    public boolean isEmpty() {
+        
+    }
+    
+    /**
+     * Number of points in the set.
+     * @return
+     */
+    public int size() {
+        
+    }
+    
+    /**
+     * Add the point to the set (if it is not already in the set).
+     * @param p
+     */
+    public void insert(Point2D p) {
+        
+    }
+    
+    /**
+     * Does the set contain point p?
+     * @param p
+     * @return
+     */
+    public boolean contains(Point2D p) {
+        
+    }
+    
+    /**
+     * Draw all points to standard draw.
+     */
+    public void draw() {
+        
+    }
+    
+    /**
+     * All points that are inside the rectangle.
+     * @param rect
+     * @return
+     */
+    public Iterable<Point2D> range(RectHV rect) {
+        
+    }
+    
+    /**
+     * A nearest neighbor in the set to point p; null if the set is empty.
+     */
+    public Point2D nearest(Point2D p) {
+        
+    }
+    
+    /**
+     * Unit testing of the methods (optional).
+     * @param args
+     */
+    public static void main(String[] args) {
+        
+    }
 }
