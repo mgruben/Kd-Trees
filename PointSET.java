@@ -1,3 +1,8 @@
+
+import edu.princeton.cs.algs4.Point2D;
+import edu.princeton.cs.algs4.RectHV;
+import edu.princeton.cs.algs4.SET;
+
 /*
  * Copyright (C) 2016 Michael <GrubenM@GMail.com>
  *
@@ -27,6 +32,7 @@
  * @author Michael <GrubenM@GMail.com>
  */
 public class PointSET {
+    private SET rb;
     
     /**
      * Construct an empty set of points.
