@@ -77,8 +77,9 @@ public class PointSET {
     
     /**
      * Does the set contain point p?
-     * @param p
-     * @return
+     * @param p the point to look for
+     * @return {@code true} if the SET contains point p;
+     *         {@code false} otherwise
      */
     public boolean contains(Point2D p) {
         return rb.contains(p);
