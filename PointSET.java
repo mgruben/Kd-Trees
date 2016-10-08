@@ -52,11 +52,10 @@ public class PointSET {
     }
     
     /**
-     * Number of points in the set.
-     * @return
+     * @return the number of points in the set.
      */
     public int size() {
-        
+        return rb.size();
     }
     
     /**
