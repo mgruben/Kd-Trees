@@ -63,6 +63,36 @@ public class KdTree {
     /**
      * Add the point to the set (if it is not already in the set).
      * 
+     * At the root (and every second level thereafter), the x-coordinate is
+     * used as the key.
+     * 
+     * This means that if (0.7, 0.2) is the root, then (0.5, 0.9) will be
+     * added to the left, since its x-coordinate is smaller than the
+     * x-coordinate of the root node.  Similarly, if the next point to be
+     * added is (0.8, 0.1), that point will be added to the right of root,
+     * since its x-coordinate is larger than the x-coordinate of the root node.
+     * 
+     * So, visually, we would have:
+     *       (0.7, 0.2)
+     *      /          \
+     * (0.5, 0.9)   (0.8, 0.1)
+     * 
+     * 
+     * At one level below the root (and every second level thereafter), the
+     * y-coordinate is used as the key.
+     * 
+     * This means that if we next add (0.6, 0.8), it will be added to the left
+     * of (0.5, 0.9).  Similarly, if we next add (0.4, 0.95), it will be added
+     * to the right of (0.5, 0.9).
+     * 
+     * So, visually, we would have:
+     *              (0.7, 0.2)
+     *             /          \
+     *        (0.5, 0.9)   (0.8, 0.1)
+     *       /          \
+     * (0.6, 0.8)   (0.4, 0.95)
+     * 
+     * 
      * Note that no check for presence is made here before attempting to add,
      * since the documentation of algs4.SET explicitly states:
      * "Adds the key to this set (if it is not already present)"
@@ -84,7 +114,6 @@ public class KdTree {
     public void insert(Point2D p) {
         if (p == null) throw new java.lang.NullPointerException
             ("called insert() with a null Point2D");
-        rb.add(p);
     }
     
     /**
