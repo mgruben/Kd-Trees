@@ -73,7 +73,7 @@ public class PointSET {
      * @return
      */
     public boolean contains(Point2D p) {
-        
+        return rb.contains(p);
     }
     
     /**
