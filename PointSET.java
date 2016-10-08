@@ -40,7 +40,7 @@ public class PointSET {
      * Construct an empty set of points.
      */
     public PointSET() {
-       
+       rb = new SET<>();
     }
     
     /**
