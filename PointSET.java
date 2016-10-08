@@ -61,10 +61,18 @@ public class PointSET {
     
     /**
      * Add the point to the set (if it is not already in the set).
-     * @param p
+     * 
+     * Note that no check for presence is made here before attempting to add,
+     * since the documentation of algs4.SET explicitly states:
+     * "Adds the key to this set (if it is not already present)"
+     * 
+     * Relatedly, no check is made for a null Point2D, because algs4.SET
+     * already performs this check.
+     * 
+     * @param p the point to add
      */
     public void insert(Point2D p) {
-        
+        rb.add(p);
     }
     
     /**
