@@ -23,13 +23,17 @@ import edu.princeton.cs.algs4.Stack;
 /**
  * This mutable data type represents a set of points in the "Unit Square".
  * 
- * Its representation depends on a Red-Black (balanced) Binary Search Tree,
- * hence O(log n) is expected for Searching, Inserting, and Deleting.
+ * Its representation depends on a Binary Search Tree, except the BST's
+ * construction depends on the order in which it receives points.
  * 
- * This particular implementation uses algs4.SET, although notably the same
- * implementation could be achieved through java.util.TreeSet.
+ * In the worst case, then O(n) performance can be expected for contains()
+ * and insert().
  * 
- * More specifically, algs4.SET is a wrapper around java.util.TreeSet.
+ * In the average case, with sufficiently randomized input, ~O(log n)
+ * performance can be expected for contains() and insert().
+ * 
+ * This implementation is based on algs4.BST, as per the suggestions
+ * in this assignment's checklist.
  * 
  * @author Michael <GrubenM@GMail.com>
  */
