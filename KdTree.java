@@ -104,21 +104,6 @@ public class KdTree {
      * (0.6, 0.8)   (0.4, 0.95)
      * 
      * 
-     * Note that no check for presence is made here before attempting to add,
-     * since the documentation of algs4.SET explicitly states:
-     * "Adds the key to this set (if it is not already present)"
-     * 
-     * Note however that this implementation explicitly checks for a null
-     * argument,even though algs4.SET also performs this check.  This is
-     * because the assignment API requires this check to be made.
-     * 
-     * In the worst case, this implementation takes time proportional to the
-     * logarithm of the number of points in the set.
-     * This is because, in the worst case, algs4.SET.add() takes logarithmic
-     * time.
-     * That is because, in the worst case, java.util.TreeSet.add() takes
-     * logarithmic time.
-     * 
      * @param p the point to add
      * @throws NullPointerException if {@code p} is {@code null}
      */
