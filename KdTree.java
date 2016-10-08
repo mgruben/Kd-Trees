@@ -44,11 +44,11 @@ public class KdTree {
     
     /**
      * Is the set empty?
-     * @return {@code true} if this SET is empty;
+     * @return {@code true} if this set is empty;
      *         {@code false} otherwise
      */
     public boolean isEmpty() {
-        return rb.isEmpty();
+        return root == null;
     }
     
     /**
