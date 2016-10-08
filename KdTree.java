@@ -40,9 +40,7 @@ public class KdTree {
     /**
      * Construct an empty set of points.
      */
-    public KdTree() {
-       rb = new SET<>();
-    }
+    public KdTree() {}
     
     /**
      * Is the set empty?
