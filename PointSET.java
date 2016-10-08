@@ -103,6 +103,9 @@ public class PointSET {
     
     /**
      * A nearest neighbor in the set to point p; null if the set is empty.
+     * @param p the point from which to search for a neighbor
+     * @return the nearest neighbor to the point p if the set contains at least
+     *         two points, {@code null} otherwise.
      */
     public Point2D nearest(Point2D p) {
         
