@@ -66,12 +66,12 @@ public class PointSET {
      * since the documentation of algs4.SET explicitly states:
      * "Adds the key to this set (if it is not already present)"
      * 
-     * Relatedly, no check is made for a null Point2D, because algs4.SET
-     * already performs this check.
-     * 
      * @param p the point to add
+     * @throws NullPointerException if {@code p} is {@code null}
      */
     public void insert(Point2D p) {
+        if (p == null) throw new java.lang.NullPointerException
+            ("called insert() with a null Point2D");
         rb.add(p);
     }
     
@@ -80,8 +80,11 @@ public class PointSET {
      * @param p the point to look for
      * @return {@code true} if the SET contains point p;
      *         {@code false} otherwise
+     * @throws NullPointerException if {@code p} is {@code null}
      */
     public boolean contains(Point2D p) {
+        if (p == null) throw new java.lang.NullPointerException
+            ("called contains() with a null Point2D");
         return rb.contains(p);
     }
     
@@ -96,9 +99,11 @@ public class PointSET {
      * All points that are inside the rectangle.
      * @param rect
      * @return
+     * @throws NullPointerException if {@code rect} is {@code null}
      */
     public Iterable<Point2D> range(RectHV rect) {
-        
+        if (rect == null) throw new java.lang.NullPointerException
+            ("called range() with a null RectHV");
     }
     
     /**
@@ -106,9 +111,11 @@ public class PointSET {
      * @param p the point from which to search for a neighbor
      * @return the nearest neighbor to the point p if the set contains at least
      *         two points, {@code null} otherwise.
+     * @throws NullPointerException if {@code p} is {@code null}
      */
     public Point2D nearest(Point2D p) {
-        
+        if (p == null) throw new java.lang.NullPointerException
+            ("called contains() with a null Point2D");
     }
     
     /**
