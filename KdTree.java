@@ -127,8 +127,7 @@ public class KdTree {
          * to the current orientation.
          */
         if (cmp < 0) n.lb = insert(n.lb, p, !evenLevel);
-        else if (cmp > 0) n.rt = insert(n.rt, p, !evenLevel);
-        else n.p = p;
+        else n.rt = insert(n.rt, p, !evenLevel);
         return n;
     }
     
