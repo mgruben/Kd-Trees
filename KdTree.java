@@ -35,7 +35,7 @@ import edu.princeton.cs.algs4.Stack;
  * @author Michael <GrubenM@GMail.com>
  */
 public class KdTree {
-    private SET<Point2D> rb;
+    private SET<Node> rb;
     
     /**
      * Construct an empty set of points.
@@ -134,14 +134,14 @@ public class KdTree {
     public boolean contains(Point2D p) {
         if (p == null) throw new java.lang.NullPointerException
             ("called contains() with a null Point2D");
-        return rb.contains(p);
+        return rb.contains(new Node(p));
     }
     
     /**
      * Draw all points to standard draw.
      */
     public void draw() {
-        for (Point2D p: rb) p.draw();
+        for (Node n: rb) n.p.draw();
     }
     
     /**
@@ -184,6 +184,16 @@ public class KdTree {
             ("called contains() with a null Point2D");
         
         if (rb.isEmpty()) return null;
+    }
+    
+    private static class Node {
+        private Point2D p;      // the point
+        private RectHV rect;    // the axis-aligned rectangle corresponding to this node
+        private Node lb;        // the left/bottom subtree
+        private Node rt;        // the right/top subtree
+        private Node(Point2D p) {
+            this.p = p;
+        }
     }
     
     /**
