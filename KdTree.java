@@ -44,6 +44,13 @@ public class KdTree {
     
     /**
      * Is the set empty?
+     * 
+     * Note that, while the Nodes in BST store their sizes, that is not done
+     * in this implementation.
+     * 
+     * Accordingly, this simplifies the code from a call to a private helper
+     * size method to a check of whether or not the root node is null.
+     * 
      * @return {@code true} if this set is empty;
      *         {@code false} otherwise
      */
