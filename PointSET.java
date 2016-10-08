@@ -2,6 +2,7 @@
 import edu.princeton.cs.algs4.Point2D;
 import edu.princeton.cs.algs4.RectHV;
 import edu.princeton.cs.algs4.SET;
+import edu.princeton.cs.algs4.Stack;
 
 /*
  * Copyright (C) 2016 Michael <GrubenM@GMail.com>
@@ -109,8 +110,8 @@ public class PointSET {
     /**
      * All points that are inside the rectangle.
      * 
-     * In the worst case, this implementation takes time proportional to the
-     * number of points in the set.
+     * In the worst (and best) case, this implementation takes time
+     * proportional to the number of points in the set.
      * 
      * @param rect
      * @return
@@ -119,6 +120,14 @@ public class PointSET {
     public Iterable<Point2D> range(RectHV rect) {
         if (rect == null) throw new java.lang.NullPointerException
             ("called range() with a null RectHV");
+        
+        // Touch each point to see whether the given rect contains it.
+        Stack<Point2D> ans = new Stack<>();
+        for (Point2D p: rb) {
+            if (rect.contains(p)) ans.push(p);
+        }
+        
+        return ans;
     }
     
     /**
