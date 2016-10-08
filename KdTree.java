@@ -114,6 +114,7 @@ public class KdTree {
     public void insert(Point2D p) {
         if (p == null) throw new java.lang.NullPointerException
             ("called insert() with a null Point2D");
+        root = insert(root, p, 0);
     }
     
     /**
