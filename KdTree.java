@@ -117,7 +117,10 @@ public class KdTree {
     }
     
     private Node insert(Node n, Point2D p, boolean evenLevel, double[] coords) {
-        if (n == null) return new Node(p, coords);
+        if (n == null) {
+            size++;
+            return new Node(p, coords);
+        }
         
         double cmp;
         if (evenLevel) {
