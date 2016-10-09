@@ -123,11 +123,7 @@ public class KdTree {
             return new Node(p, coords);
         }
         
-        double cmp;
-        if (evenLevel) {
-            cmp = p.x() - n.p.x();
-        }
-        else cmp = p.y() - n.p.y();
+        double cmp = comparePoints(p, n, evenLevel);
         
         /**
          * Traverse down the BST.
@@ -216,11 +212,7 @@ public class KdTree {
         // Check whether the search point matches the current Node's point
         if (n.p.equals(p)) return true;
         
-        double cmp;
-        if (evenLevel) {
-            cmp = p.x() - n.p.x();
-        }
-        else cmp = p.y() - n.p.y();
+        double cmp = comparePoints(p, n, evenLevel);
         
         // Traverse the left path when necessary
         if (cmp < 0) return contains(n.lb, p, !evenLevel);
@@ -257,7 +249,6 @@ public class KdTree {
             StdDraw.setPenColor(StdDraw.BLUE);
             StdDraw.line(n.rect.xmin(), n.p.y(), n.rect.xmax(), n.p.y());
         }
-        
         
         // Traverse the right Nodes
         draw(n.rt, !evenLevel);
@@ -362,11 +353,7 @@ public class KdTree {
          * of the points on the other side of that partition line, because none
          * can be closer.
          */
-        double toPartitionLine;
-        if (evenLevel) {
-            toPartitionLine = p.x() - n.p.x();
-        }
-        else toPartitionLine = p.y() - n.p.y();
+        double toPartitionLine = comparePoints(p, n, evenLevel);
         
         /**
          * Handle the search point being to the left of or below
@@ -381,6 +368,7 @@ public class KdTree {
                 champion = nearest(n.rt, p, champion, !evenLevel);
             }
         }
+        
         /**
          * Handle the search point being to the right of or above
          * the current Node's point.
@@ -404,6 +392,34 @@ public class KdTree {
         return champion;
     }
     
+    /**
+     * The distance and direction from the given point to the given Node's
+     * partition line.
+     * 
+     * If the sign of the returned double is negative, then the given point
+     * lies or should lie on the left branch of the given Node.
+     * 
+     * Otherwise (including where the difference is exactly 0), then the
+     * given point lies or should lie on the right branch of the given Node.
+     * 
+     * @param p the point in question
+     * @param n the Node in question
+     * @param evenLevel is the current level even?  If so, then the Node's
+     *        partition line is vertical, so the point will be to the left
+     *        or right of the Node.  If not, then the Node's partition line
+     *        is horizontal, so the point will be above or below the Node.
+     * @return the distance and direction from p to n's partition line
+     */
+    private double comparePoints(Point2D p, Node n, boolean evenLevel) {
+        if (evenLevel) {
+            return p.x() - n.p.x();
+        }
+        else return p.y() - n.p.y();
+    }
+    
+    /**
+     * The data structure from which a KdTree is created.
+     */
     private static class Node {
         
         // the point
