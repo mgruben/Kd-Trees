@@ -2,6 +2,7 @@
 import edu.princeton.cs.algs4.Point2D;
 import edu.princeton.cs.algs4.RectHV;
 import edu.princeton.cs.algs4.Stack;
+import edu.princeton.cs.algs4.StdDraw;
 import edu.princeton.cs.algs4.StdOut;
 
 /*
@@ -248,6 +249,9 @@ public class KdTree {
     private void draw(Node n) {
         if (n == null) return;
         draw(n.lb);
+        StdDraw.setPenColor(StdDraw.BLACK);
+        StdDraw.setPenRadius(0.01);
+        n.p.draw();
         n.rect.draw();
         draw(n.rt);
     }
