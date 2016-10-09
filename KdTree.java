@@ -313,12 +313,11 @@ public class KdTree {
         if (p == null) throw new java.lang.NullPointerException
             ("called contains() with a null Point2D");
         if (isEmpty()) return null;
-        PointDistance start = new PointDistance(null, Double.MAX_VALUE);
-        return nearest(root, p, start, true);
+        PointPair start = new PointPair(p, root.p, true);
+        return nearest(root, start, true);
     }
     
-    private Point2D nearest(Node n, Point2D given, Point2D closestPoint,
-            double closestDistance, boolean evenLevel) {
+    private Point2D nearest(Node n, PointPair pair, boolean evenLevel) {
         
         // Handle the given point exactly overlapping a point in the BST
         if (n.p.equals(given)) return n.p;
@@ -377,12 +376,16 @@ public class KdTree {
     
     private static class PointPair {
         private final Point2D given;
-        private final Point2D p;
-        private final double dist;
-        private final boolean isLB;
+        private Point2D p;
+        private double dist;
+        private boolean isLB;
         
         private PointPair(Point2D given, Point2D p, boolean evenLevel) {
             this.given = given;
+            this.updatePoint(p, evenLevel);
+        }
+        
+        private void updatePoint(Point2D p, boolean evenLevel) {
             this.p = p;
             
             dist = this.given.distanceTo(this.p);
@@ -393,18 +396,22 @@ public class KdTree {
             }
             else cmp = this.given.y() - this.p.y();
             
-            // Handle given point to the left or bottom of Point2D p
-            if (cmp < 0) isLB = true;
-            
             /**
+             * Determine whether the given point would be to the left or 
+             * to the right of the newly-passed Point2D p in the BST.
+             * 
              * When the given point is not to the left or bottom of p,
-             * we need to check the right Node.
+             * we need to check the right Node in the BST.
              * 
              * This is because, as in insert() and as per the checklist,
              * these "ties" are resolved in favor of the right subtree.
              */
-            else isLB = false;
+            isLB = cmp < 0;
+
         }
+        
+        private double getDist() { return dist; }
+        private boolean isLB() { return isLB; }
     }
     
     /**
