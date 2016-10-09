@@ -111,8 +111,8 @@ public class KdTree {
      * @throws NullPointerException if {@code p} is {@code null}
      */
     public void insert(Point2D p) {
-        if (p == null) throw new java.lang.NullPointerException
-            ("called insert() with a null Point2D");
+        if (p == null) throw new java.lang.NullPointerException(
+                "called insert() with a null Point2D");
         
         // new double[] {x_min, y_min, x_max, y_max)
         root = insert(root, p, true, new double[] {0, 0, 1, 1});
@@ -204,8 +204,8 @@ public class KdTree {
      * @throws NullPointerException if {@code p} is {@code null}
      */
     public boolean contains(Point2D p) {
-        if (p == null) throw new java.lang.NullPointerException
-            ("called contains() with a null Point2D");
+        if (p == null) throw new java.lang.NullPointerException(
+                "called contains() with a null Point2D");
         return contains(root, p, true);
     }
     
@@ -289,8 +289,8 @@ public class KdTree {
      * @throws NullPointerException if {@code rect} is {@code null}
      */
     public Iterable<Point2D> range(RectHV rect) {
-        if (rect == null) throw new java.lang.NullPointerException
-            ("called range() with a null RectHV");
+        if (rect == null) throw new java.lang.NullPointerException(
+                "called range() with a null RectHV");
         Stack<Point2D> points = new Stack<>();
         Stack<Node> nodes = new Stack<>();
         nodes.push(root);
@@ -323,8 +323,8 @@ public class KdTree {
      * @throws NullPointerException if {@code p} is {@code null}
      */
     public Point2D nearest(Point2D p) {
-        if (p == null) throw new java.lang.NullPointerException
-            ("called contains() with a null Point2D");
+        if (p == null) throw new java.lang.NullPointerException(
+                "called contains() with a null Point2D");
         if (isEmpty()) return null;
         PointPair start = new PointPair(p);
         return nearest(root, start, true);
@@ -415,8 +415,8 @@ public class KdTree {
             this.updatePoint(p, evenLevel);
         }
         
-        private void updatePoint(Point2D p, boolean evenLevel) {
-            this.p = p;
+        private void updatePoint(Point2D newPoint, boolean evenLevel) {
+            this.p = newPoint;
             
             dist = this.given.distanceTo(this.p);
             
