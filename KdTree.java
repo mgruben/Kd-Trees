@@ -2,6 +2,7 @@
 import edu.princeton.cs.algs4.Point2D;
 import edu.princeton.cs.algs4.RectHV;
 import edu.princeton.cs.algs4.Stack;
+import edu.princeton.cs.algs4.StdOut;
 
 /*
  * Copyright (C) 2016 Michael <GrubenM@GMail.com>
@@ -209,7 +210,7 @@ public class KdTree {
      * Draw all points to standard draw.
      */
     public void draw() {
-        for (Node n: rb) n.p.draw();
+        //for (Node n: rb) n.p.draw();
     }
     
     /**
@@ -229,7 +230,7 @@ public class KdTree {
     public Iterable<Point2D> range(RectHV rect) {
         if (rect == null) throw new java.lang.NullPointerException
             ("called range() with a null RectHV");
-
+        return new Stack<Point2D>();
     }
     
     /**
@@ -251,7 +252,7 @@ public class KdTree {
         if (p == null) throw new java.lang.NullPointerException
             ("called contains() with a null Point2D");
         
-        if (rb.isEmpty()) return null;
+        return new Point2D(0,0);
     }
     
     private static class Node {
@@ -283,6 +284,10 @@ public class KdTree {
      * @param args
      */
     public static void main(String[] args) {
-        
+        KdTree k = new KdTree();
+        Point2D test = new Point2D(1, 2);
+        k.insert(test);
+        Point2D trest = new Point2D(2, 2);
+        StdOut.println(k.contains(trest));
     }
 }
