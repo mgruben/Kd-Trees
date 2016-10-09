@@ -242,7 +242,14 @@ public class KdTree {
      * Draw all points to standard draw.
      */
     public void draw() {
-        //for (Node n: rb) n.p.draw();
+        draw(root);
+    }
+    
+    private void draw(Node n) {
+        if (n == null) return;
+        draw(n.lb);
+        n.rect.draw();
+        draw(n.rt);
     }
     
     /**
