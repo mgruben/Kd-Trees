@@ -291,7 +291,20 @@ public class KdTree {
     public Iterable<Point2D> range(RectHV rect) {
         if (rect == null) throw new java.lang.NullPointerException
             ("called range() with a null RectHV");
-        return new Stack<Point2D>();
+        Stack<Point2D> points = new Stack<>();
+        Stack<Node> nodes = new Stack<>();
+        nodes.push(root);
+        while (!nodes.isEmpty()) {
+            Node tmp = nodes.pop();
+            if (rect.contains(tmp.p)) points.push(tmp.p);
+            if (tmp.lb != null && rect.intersects(tmp.lb.rect)) {
+                nodes.push(tmp.lb);
+            }
+            if (tmp.rt != null && rect.intersects(tmp.rt.rect)) {
+                nodes.push(tmp.rt);
+            }
+        }
+        return points;
     }
     
     /**
@@ -385,7 +398,7 @@ public class KdTree {
             rect = new RectHV(coords[0], coords[1], coords[2], coords[3]);
         }
     }
-    
+        
     private static class PointPair {
         private final Point2D given;
         private Point2D p;
