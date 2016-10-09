@@ -341,15 +341,18 @@ public class KdTree {
         if (n.p.distanceTo(p) < champion.distanceTo(p)) champion = n.p;
         
         /**
-         * Calculate the distance to the partition line.
+         * Calculate the distance from the search point to the current
+         * Node's partition line.
          * 
-         * If we find a champion whose distance is shorter than to a previous
-         * partition line, then we know we don't have to check any of the
-         * points on the other side of that partition line, because none can
-         * be closer.
-         * 
-         * Additionally, the sign of this calculation is useful in determining
+         * Primarily, the sign of this calculation is useful in determining
          * which side of the Node to traverse next.
+         * 
+         * Additionally, the magnitude to toPartitionLine is useful for pruning.
+         * 
+         * Specifically, if we find a champion whose distance is shorter than
+         * to a previous partition line, then we know we don't have to check any
+         * of the points on the other side of that partition line, because none
+         * can be closer.
          */
         double toPartitionLine;
         if (evenLevel) {
