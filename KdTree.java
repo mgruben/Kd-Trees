@@ -123,11 +123,37 @@ public class KdTree {
         else cmp = p.y() - n.p.y();
         
         /**
+         * Traverse down the BST.
+         * 
          * In subsequent levels, the orientation is orthogonal
          * to the current orientation.
+         * 
+         * Place the point in the left or right nodes accordingly.
+         * 
+         * If the comparison is not clearly left or right, then it could be
+         * that we're considering literally the same point, in which case
+         * the size shouldn't increase, or that we're considering a point
+         * which lies on the same partition line, which would need to be added
+         * to the BST and increase the size accordingly.
          */
+        
+        // Handle Nodes which should be inserted to the left or bottom
         if (cmp < 0) n.lb = insert(n.lb, p, !evenLevel);
-        else n.rt = insert(n.rt, p, !evenLevel);
+        
+        // Handle Nodes which should be inserted to the right or top
+        else if (cmp > 0) n.rt = insert(n.rt, p, !evenLevel);
+        
+        // Handle Nodes which aren't the same point,
+        // but lie on the same partition line
+        else if (!n.p.equals(p)) n.rt = insert(n.rt, p, !evenLevel);
+        
+        /**
+         * Do nothing for a point which is already in the BST.
+         * This is because the BST contains a "set" of points.
+         * Hence, duplicates are silently dropped, rather than
+         * being added.
+         */
+        
         return n;
     }
     
