@@ -334,6 +334,9 @@ public class KdTree {
         // Return the last point if we've reached a null Node
         if (n == null) return pair.getPoint();
         
+        // Handle the given point exactly overlapping a point in the BST
+        if (pair.isSamePoint()) return pair.getPoint();
+        
         /**
          * Store the current distance to the partition line, since the
          * given PointPair will likely mutate after following one of the two
@@ -349,9 +352,6 @@ public class KdTree {
          * we have to explore the other side of the Node as well.
          */
         double toPartitionLine = pair.toPartitionLine;
-        
-        // Handle the given point exactly overlapping a point in the BST
-        if (pair.isSamePoint()) return pair.getPoint();
         
         /**
          * Traverse the BST, taking the most likely paths first, in the hopes
