@@ -115,7 +115,7 @@ public class KdTree {
     }
     
     private Node insert(Node n, Point2D p, boolean evenLevel) {
-        if (n == null) return new Node(p, evenLevel);
+        if (n == null) return new Node(p);
         
         double cmp;
         if (evenLevel) {
@@ -269,11 +269,8 @@ public class KdTree {
         // the right/top subtree
         private Node rt;
         
-        private boolean evenLevel;
-        
-        private Node(Point2D p, boolean evenLevel) {
+        private Node(Point2D p) {
             this.p = p;
-            this.evenLevel = evenLevel;
         }
         
         
