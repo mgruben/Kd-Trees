@@ -280,12 +280,29 @@ public class KdTree {
     public Iterable<Point2D> range(RectHV rect) {
         if (rect == null) throw new java.lang.NullPointerException(
                 "called range() with a null RectHV");
+        
         Stack<Point2D> points = new Stack<>();
+        
+        // Handle KdTree without a root node yet
+        if (root == null) return points;
+        
         Stack<Node> nodes = new Stack<>();
         nodes.push(root);
         while (!nodes.isEmpty()) {
+            
+            // Examine the next Node
             Node tmp = nodes.pop();
+            
+            // Add contained points to our points stack
             if (rect.contains(tmp.p)) points.push(tmp.p);
+            
+            /**
+             * Add Nodes containing promising rectanges to our nodes stack.
+             * 
+             * Note that, since we don't push Nodes onto the stack unless
+             * their rectangles intersect with the given RectHV, we achieve
+             * pruning as we traverse the BST.
+             */
             if (tmp.lb != null && rect.intersects(tmp.lb.rect)) {
                 nodes.push(tmp.lb);
             }
