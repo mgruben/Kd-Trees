@@ -325,57 +325,76 @@ public class KdTree {
         if (p == null) throw new java.lang.NullPointerException(
                 "called contains() with a null Point2D");
         if (isEmpty()) return null;
-        PointPair start = new PointPair(p);
-        return nearest(root, start, true);
+        return nearest(root, p, root.p, true);
     }
     
-    private Point2D nearest(Node n, PointPair pair, boolean evenLevel) {
+    private Point2D nearest(Node n, Point2D p, Point2D champion,
+            boolean evenLevel) {
         
-        // Return the last point if we've reached a null Node
-        if (n == null) return pair.getPoint();
-        
-        // Update the PointPair class with the point of the current Node
-        pair.updatePoint(n.p, evenLevel);
-        
-        /**
-         * Store the current distance to the partition line, since the
-         * given PointPair will likely mutate after following one of the two
-         * Node paths.
-         * 
-         * If, after that exploration, the closest distance is less than the
-         * distance to the partition line, then we know that there's no reason
-         * to explore the other side of the Node.
-         * 
-         * However, if after that exploration, the closest distance is not less
-         * than the distance to the partition line, then we _don't_ know whether
-         * there's a closer point on the other side of the partition line, hence
-         * we have to explore the other side of the Node as well.
-         */
-        double toPartitionLine = pair.toPartitionLine;
+        // Handle reaching the end of the tree
+        if (n == null) return champion;
         
         // Handle the given point exactly overlapping a point in the BST
-        if (pair.isSamePoint()) return pair.getPoint();
+        if (n.p.equals(p)) return p;
+        
+        // Determine if the current Node's point beats the existing champion
+        if (n.p.distanceSquaredTo(p) < champion.distanceSquaredTo(p))
+            champion = n.p;
         
         /**
-         * Traverse the BST, taking the most likely paths first, in the hopes
-         * that paths which may, earlier, appear to contain a closer point,
-         * won't be traveled if later it becomes clear that they can't beat
-         * the current "champion".
+         * Calculate the distance from the search point to the current
+         * Node's partition line.
+         * 
+         * Primarily, the sign of this calculation is useful in determining
+         * which side of the Node to traverse next.
+         * 
+         * Additionally, the magnitude to toPartitionLine is useful for pruning.
+         * 
+         * Specifically, if we find a champion whose distance is shorter than
+         * to a previous partition line, then we know we don't have to check any
+         * of the points on the other side of that partition line, because none
+         * can be closer.
          */
-        if (pair.isLB()) {
-            pair.updatePoint(nearest(n.lb, pair, !evenLevel), !evenLevel);
-            if (pair.getDist() >= toPartitionLine) {
-                pair.updatePoint(nearest(n.rt, pair, !evenLevel), !evenLevel);
+        double toPartitionLine;
+        if (evenLevel) {
+            toPartitionLine = p.x() - n.p.x();
+        }
+        else toPartitionLine = p.y() - n.p.y();
+        
+        /**
+         * Handle the search point being to the left of or below
+         * the current Node's point.
+         */
+        if (toPartitionLine < 0) {
+            champion = nearest(n.lb, p, champion, !evenLevel);
+            
+            // Since champion may have changed, recalculate distance
+            if (champion.distanceSquaredTo(p) >=
+                    toPartitionLine * toPartitionLine) {
+                champion = nearest(n.rt, p, champion, !evenLevel);
             }
         }
+        /**
+         * Handle the search point being to the right of or above
+         * the current Node's point.
+         * 
+         * Note that, since insert() above breaks point comparison ties
+         * by placing the inserted point on the right branch of the current
+         * Node, traversal must also break ties by going to the right branch
+         * of the current Node (i.e. to the right or top, depending on
+         * the level of the current Node).
+         */
         else {
-            pair.updatePoint(nearest(n.rt, pair, !evenLevel), !evenLevel);
-            if (pair.getDist() >= toPartitionLine) {
-                pair.updatePoint(nearest(n.lb, pair, !evenLevel), !evenLevel);
+            champion = nearest(n.rt, p, champion, !evenLevel);
+            
+            // Since champion may have changed, recalculate distance
+            if (champion.distanceSquaredTo(p) >=
+                    toPartitionLine * toPartitionLine) {
+                champion = nearest(n.lb, p, champion, !evenLevel);
             }
         }
         
-        return pair.getPoint();
+        return champion;
     }
     
     private static class Node {
@@ -397,53 +416,7 @@ public class KdTree {
             rect = new RectHV(coords[0], coords[1], coords[2], coords[3]);
         }
     }
-        
-    private static class PointPair {
-        private final Point2D given;
-        private Point2D p;
-        private double dist;
-        private boolean isLB;
-        private double toPartitionLine;
-        
-        private PointPair(Point2D given) {
-            this.given = given;
-        }
-        
-        private PointPair(Point2D given, Point2D p, boolean evenLevel) {
-            this.given = given;
-            this.updatePoint(p, evenLevel);
-        }
-        
-        private void updatePoint(Point2D newPoint, boolean evenLevel) {
-            p = newPoint;
             
-            dist = given.distanceTo(p);
-            
-            if (evenLevel) {
-                toPartitionLine = given.x() - p.x();
-            }
-            else toPartitionLine = given.y() - p.y();
-            
-            /**
-             * Determine whether the given point would be to the left or 
-             * to the right of the newly-passed Point2D p in the BST.
-             * 
-             * When the given point is not to the left or bottom of p,
-             * we need to check the right Node in the BST.
-             * 
-             * This is because, as in insert() and as per the checklist,
-             * these "ties" are resolved in favor of the right subtree.
-             */
-            isLB = toPartitionLine < 0;
-
-        }
-        
-        private double getDist() { return dist; }
-        private boolean isLB() { return isLB; }
-        private boolean isSamePoint() { return given.equals(p); }
-        private Point2D getPoint() { return p; }
-    }
-    
     /**
      * Unit testing of the methods (optional).
      * @param args
