@@ -162,20 +162,47 @@ public class KdTree {
      * 
      * In the worst case, this implementation takes time proportional to the
      * logarithm of the number of points in the set.
-     * This is because, in the worst case, algs4.SET.contains() takes
-     * logarithmic time.
-     * That is because, in the worst case, java.util.TreeSet.contains() takes
-     * logarithmic time.
      * 
      * @param p the point to look for
-     * @return {@code true} if the SET contains point p;
+     * @return {@code true} if the set contains point p;
      *         {@code false} otherwise
      * @throws NullPointerException if {@code p} is {@code null}
      */
     public boolean contains(Point2D p) {
         if (p == null) throw new java.lang.NullPointerException
             ("called contains() with a null Point2D");
-        return rb.contains(new Node(p));
+        return contains(root, p, true);
+    }
+    
+    private boolean contains(Node n, Point2D p, boolean evenLevel) {
+        if (n == null) return false;
+        
+        double cmp;
+        if (evenLevel) {
+            cmp = p.x() - n.p.x();
+        }
+        else cmp = p.y() - n.p.y();
+        
+        // Traverse the right path when necessary
+        if (cmp > 0) return contains(n.rt, p, !evenLevel);
+        
+        // Traverse the left path when necessary
+        else if (cmp < 0) return contains(n.lb, p, !evenLevel);
+        
+        /**
+         * If cmp is 0, we know only that the given point lies
+         * on the same partition line as the current Node's point.
+         * 
+         * Accordingly, we must check whether the given point is actually
+         * present within the BST before returning true.
+         */
+        else if (n.p.equals(p)) return true;
+        
+        /**
+         * Whether or not the given point lies on the partition line,
+         * if it is not in the BST, then return false.
+         */
+        return false;
     }
     
     /**
