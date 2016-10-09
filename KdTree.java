@@ -325,6 +325,22 @@ public class KdTree {
         // Update the PointPair class with the point of the current Node
         pair.updatePoint(n.p, evenLevel);
         
+        /**
+         * Store the current distance to the partition line, since the
+         * given PointPair will likely mutate after following one of the two
+         * Node paths.
+         * 
+         * If, after that exploration, the closest distance is less than the
+         * distance to the partition line, then we know that there's no reason
+         * to explore the other side of the Node.
+         * 
+         * However, if after that exploration, the closest distance is not less
+         * than the distance to the partition line, then we _don't_ know whether
+         * there's a closer point on the other side of the partition line, hence
+         * we have to explore the other side of the Node as well.
+         */
+        double toPartitionLine = pair.toPartitionLine;
+        
         // Handle the given point exactly overlapping a point in the BST
         if (pair.isSamePoint()) return pair.getPoint();
         
@@ -334,8 +350,18 @@ public class KdTree {
          * won't be traveled if later it becomes clear that they can't beat
          * the current "champion".
          */
-        if (pair.isLB()) pair.updatePoint(nearest(n.lb, pair, !evenLevel), !evenLevel);
-        else pair.updatePoint(nearest(n.rt, pair, !evenLevel), !evenLevel);
+        if (pair.isLB()) {
+            pair.updatePoint(nearest(n.lb, pair, !evenLevel), !evenLevel);
+            if (pair.getDist() >= toPartitionLine) {
+                pair.updatePoint(nearest(n.rt, pair, !evenLevel), !evenLevel);
+            }
+        }
+        else {
+            pair.updatePoint(nearest(n.rt, pair, !evenLevel), !evenLevel);
+            if (pair.getDist() >= toPartitionLine) {
+                pair.updatePoint(nearest(n.lb, pair, !evenLevel), !evenLevel);
+            }
+        }
         
         return pair.getPoint();
     }
@@ -365,6 +391,7 @@ public class KdTree {
         private Point2D p;
         private double dist;
         private boolean isLB;
+        private double toPartitionLine;
         
         private PointPair(Point2D given) {
             this.given = given;
@@ -380,11 +407,10 @@ public class KdTree {
             
             dist = this.given.distanceTo(this.p);
             
-            double cmp;
             if (evenLevel) {
-                cmp = this.given.x() - this.p.x();
+                toPartitionLine = this.given.x() - this.p.x();
             }
-            else cmp = this.given.y() - this.p.y();
+            else toPartitionLine = this.given.y() - this.p.y();
             
             /**
              * Determine whether the given point would be to the left or 
@@ -396,7 +422,7 @@ public class KdTree {
              * This is because, as in insert() and as per the checklist,
              * these "ties" are resolved in favor of the right subtree.
              */
-            isLB = cmp < 0;
+            isLB = toPartitionLine < 0;
 
         }
         
