@@ -313,28 +313,20 @@ public class KdTree {
         if (p == null) throw new java.lang.NullPointerException
             ("called contains() with a null Point2D");
         if (isEmpty()) return null;
-        PointPair start = new PointPair(p, root.p, true);
+        PointPair start = new PointPair(p);
         return nearest(root, start, true);
     }
     
     private Point2D nearest(Node n, PointPair pair, boolean evenLevel) {
         
+        // Return the last point if we've reached a null Node
+        if (n == null) return pair.getPoint();
+        
+        // Update the PointPair class with the point of the current Node
+        pair.updatePoint(n.p, evenLevel);
+        
         // Handle the given point exactly overlapping a point in the BST
-        if (n.p.equals(given)) return n.p;
-        
-        // Check and update the current best distance
-        double currentDistance = given.distanceTo(n.p);
-        if (currentDistance < closestDistance) {
-            closestPoint = n.p;
-            closestDistance = currentDistance;
-        }
-        
-        // Determine on which side of the Node the given point lies
-        double cmp;
-        if (evenLevel) {
-            cmp = given.x() - n.p.x();
-        }
-        else cmp = given.y() - n.p.y();
+        if (pair.isSamePoint()) return pair.getPoint();
         
         /**
          * Traverse the BST, taking the most likely paths first, in the hopes
@@ -342,16 +334,10 @@ public class KdTree {
          * won't be traveled if later it becomes clear that they can't beat
          * the current "champion".
          */
-        if (cmp < 0 && evenLevel) {
-            closestPoint = nearest(n.lb, given, closestPoint,
-                    closestDistance, !evenLevel);
-        }
-        else if (cmp < 0 && !evenLevel) {}
-        else if (cmp > 0 && evenLevel) {}
-        else if (cmp > 0 && !evenLevel) {}
-        else if (!n.p.equals(given)) {}
+        if (pair.isLB()) pair.updatePoint(nearest(n.lb, pair, !evenLevel), !evenLevel);
+        else pair.updatePoint(nearest(n.rt, pair, !evenLevel), !evenLevel);
         
-        return closestPoint;
+        return pair.getPoint();
     }
     
     private static class Node {
@@ -379,6 +365,10 @@ public class KdTree {
         private Point2D p;
         private double dist;
         private boolean isLB;
+        
+        private PointPair(Point2D given) {
+            this.given = given;
+        }
         
         private PointPair(Point2D given, Point2D p, boolean evenLevel) {
             this.given = given;
@@ -412,6 +402,8 @@ public class KdTree {
         
         private double getDist() { return dist; }
         private boolean isLB() { return isLB; }
+        private boolean isSamePoint() { return given.equals(p); }
+        private Point2D getPoint() { return p; }
     }
     
     /**
