@@ -1,9 +1,9 @@
 
-import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.Point2D;
 import edu.princeton.cs.algs4.RectHV;
 import edu.princeton.cs.algs4.Stack;
 import edu.princeton.cs.algs4.StdDraw;
+import edu.princeton.cs.algs4.StdOut;
 
 /*
  * Copyright (C) 2016 Michael <GrubenM@GMail.com>
@@ -209,7 +209,12 @@ public class KdTree {
     }
     
     private boolean contains(Node n, Point2D p, boolean evenLevel) {
+        
+        // Handle reaching the end of the search
         if (n == null) return false;
+        
+        // Check whether the search point matches the current Node's point
+        if (n.p.equals(p)) return true;
         
         double cmp;
         if (evenLevel) {
@@ -217,26 +222,11 @@ public class KdTree {
         }
         else cmp = p.y() - n.p.y();
         
-        // Traverse the right path when necessary
-        if (cmp > 0) return contains(n.rt, p, !evenLevel);
-        
         // Traverse the left path when necessary
-        else if (cmp < 0) return contains(n.lb, p, !evenLevel);
+        if (cmp < 0) return contains(n.lb, p, !evenLevel);
         
-        /**
-         * If cmp is 0, we know only that the given point lies
-         * on the same partition line as the current Node's point.
-         * 
-         * Accordingly, we must check whether the given point is actually
-         * present within the BST before returning true.
-         */
-        else if (n.p.equals(p)) return true;
-        
-        /**
-         * Whether or not the given point lies on the partition line,
-         * if it is not in the BST, then return false.
-         */
-        return false;
+        // Traverse the right path when necessary, and as tie-breaker
+        else return contains(n.rt, p, !evenLevel); 
     }
     
     /**
@@ -422,21 +412,9 @@ public class KdTree {
      * @param args
      */
     public static void main(String[] args) {
-        String filename = "kdtree-testing/circle10.txt";
-        In in = new In(filename);
-
-        StdDraw.enableDoubleBuffering();
-
-        // initialize the data structures with N points from standard input
         KdTree kdtree = new KdTree();
-        while (!in.isEmpty()) {
-            double x = in.readDouble();
-            double y = in.readDouble();
-            Point2D p = new Point2D(x, y);
-            kdtree.insert(p);
-        }
-        kdtree.draw();
-        StdDraw.show();
-
+        Point2D p = new Point2D(0.2, 0.3);
+        kdtree.insert(p);
+        StdOut.println(kdtree.contains(p));
     }
 }
