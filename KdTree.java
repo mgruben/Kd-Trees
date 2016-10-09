@@ -337,13 +337,8 @@ public class KdTree {
         // Handle the given point exactly overlapping a point in the BST
         if (n.p.equals(p)) return p;
         
-        // Determine if the current point beats the existing champion
-        double currentDistance = n.p.distanceTo(p);
-        double bestDistance = champion.distanceTo(p);
-        if (currentDistance < bestDistance) {
-            bestDistance = currentDistance;
-            champion = n.p;
-        }
+        // Determine if the current Node's point beats the existing champion
+        if (n.p.distanceTo(p) < champion.distanceTo(p)) champion = n.p;
         
         /**
          * Calculate the distance to the partition line.
