@@ -325,7 +325,7 @@ public class KdTree {
         if (p == null) throw new java.lang.NullPointerException(
                 "called contains() with a null Point2D");
         if (isEmpty()) return null;
-        PointPair start = new PointPair(p);
+        PointPair start = new PointPair(p, root.p, true);
         return nearest(root, start, true);
     }
     
@@ -333,9 +333,6 @@ public class KdTree {
         
         // Return the last point if we've reached a null Node
         if (n == null) return pair.getPoint();
-        
-        // Update the PointPair class with the point of the current Node
-        pair.updatePoint(n.p, evenLevel);
         
         /**
          * Store the current distance to the partition line, since the
