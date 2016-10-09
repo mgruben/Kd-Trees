@@ -1,4 +1,5 @@
 
+import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.Point2D;
 import edu.princeton.cs.algs4.RectHV;
 import edu.princeton.cs.algs4.Stack;
@@ -240,20 +241,29 @@ public class KdTree {
     }
     
     /**
-     * Draw all points to standard draw.
+     * Draw all points and partition lines to standard draw.
      */
     public void draw() {
-        draw(root);
+        draw(root, true);
     }
     
-    private void draw(Node n) {
+    private void draw(Node n, boolean evenLevel) {
         if (n == null) return;
-        draw(n.lb);
+        
+        // Traverse the left Nodes
+        draw(n.lb, !evenLevel);
+        
+        // Draw the current Node
         StdDraw.setPenColor(StdDraw.BLACK);
         StdDraw.setPenRadius(0.01);
         n.p.draw();
+        if (evenLevel) StdDraw.setPenColor(StdDraw.RED);
+        else StdDraw.setPenColor(StdDraw.BLUE);
+        StdDraw.setPenRadius();
         n.rect.draw();
-        draw(n.rt);
+        
+        // Traverse the right Nodes
+        draw(n.rt, !evenLevel);
     }
     
     /**
@@ -325,10 +335,21 @@ public class KdTree {
      * @param args
      */
     public static void main(String[] args) {
-        KdTree k = new KdTree();
-        Point2D test = new Point2D(1, 2);
-        k.insert(test);
-        Point2D trest = new Point2D(2, 2);
-        StdOut.println(k.contains(trest));
+        String filename = "kdtree-testing/circle10.txt";
+        In in = new In(filename);
+
+        StdDraw.enableDoubleBuffering();
+
+        // initialize the data structures with N points from standard input
+        KdTree kdtree = new KdTree();
+        while (!in.isEmpty()) {
+            double x = in.readDouble();
+            double y = in.readDouble();
+            Point2D p = new Point2D(x, y);
+            kdtree.insert(p);
+        }
+        kdtree.draw();
+        StdDraw.show();
+
     }
 }
