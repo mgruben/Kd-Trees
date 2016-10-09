@@ -111,11 +111,13 @@ public class KdTree {
     public void insert(Point2D p) {
         if (p == null) throw new java.lang.NullPointerException
             ("called insert() with a null Point2D");
-        root = insert(root, p, true);
+        
+        // new double[] {x_min, y_min, x_max, y_max)
+        root = insert(root, p, true, new double[] {0, 0, 1, 1});
     }
     
-    private Node insert(Node n, Point2D p, boolean evenLevel) {
-        if (n == null) return new Node(p);
+    private Node insert(Node n, Point2D p, boolean evenLevel, double[] coords) {
+        if (n == null) return new Node(p, coords);
         
         double cmp;
         if (evenLevel) {
@@ -131,22 +133,49 @@ public class KdTree {
          * 
          * Place the point in the left or right nodes accordingly.
          * 
-         * If the comparison is not clearly left or right, then it could be
-         * that we're considering literally the same point, in which case
+         * If the comparison is not affirmatively left or right, then it could
+         * be that we're considering literally the same point, in which case
          * the size shouldn't increase, or that we're considering a point
          * which lies on the same partition line, which would need to be added
          * to the BST and increase the size accordingly.
          */
         
-        // Handle Nodes which should be inserted to the left or bottom
-        if (cmp < 0) n.lb = insert(n.lb, p, !evenLevel);
+        // Handle Nodes which should be inserted to the left
+        if (cmp < 0 && evenLevel) {
+            coords[2] = n.p.x(); // lessen x_max
+            n.lb = insert(n.lb, p, !evenLevel, coords);
+        }
         
-        // Handle Nodes which should be inserted to the right or top
-        else if (cmp > 0) n.rt = insert(n.rt, p, !evenLevel);
+        // Handle Nodes which should be inserted to the bottom
+        else if (cmp < 0 && !evenLevel) {
+            coords[3] = n.p.y(); // lessen y_max
+            n.lb = insert(n.lb, p, !evenLevel, coords);
+        }
         
-        // Handle Nodes which aren't the same point,
-        // but lie on the same partition line
-        else if (!n.p.equals(p)) n.rt = insert(n.rt, p, !evenLevel);
+        // Handle Nodes which should be inserted to the right
+        else if (cmp > 0 && evenLevel) {
+            coords[0] = n.p.x(); // increase x_min
+            n.rt = insert(n.rt, p, !evenLevel, coords);
+        }
+        
+        // Handle Nodes which should be inserted to the top
+        else if (cmp > 0 && !evenLevel) {
+            coords[1] = n.p.y(); // increase y_min
+            n.rt = insert(n.rt, p, !evenLevel, coords);
+        }
+        
+        /**
+         * Handle Nodes which lie on the same partition line, 
+         * but aren't the same point.
+         * 
+         * As per the checklist, these "ties" are resolved in favor of the
+         * right subtree.
+         * 
+         * It is assumed that the RectHV to be created cannot be shrunk
+         * at all, and so none of coords[] values are updated here.
+         */
+        else if (!n.p.equals(p))
+            n.rt = insert(n.rt, p, !evenLevel, coords);
         
         /**
          * Do nothing for a point which is already in the BST.
@@ -269,8 +298,9 @@ public class KdTree {
         // the right/top subtree
         private Node rt;
         
-        private Node(Point2D p) {
+        private Node(Point2D p, double[] coords) {
             this.p = p;
+            rect = new RectHV(coords[0], coords[1], coords[2], coords[3]);
         }
         
         
