@@ -257,10 +257,18 @@ public class KdTree {
         StdDraw.setPenColor(StdDraw.BLACK);
         StdDraw.setPenRadius(0.01);
         n.p.draw();
-        if (evenLevel) StdDraw.setPenColor(StdDraw.RED);
-        else StdDraw.setPenColor(StdDraw.BLUE);
+        
+        // Draw the partition line
         StdDraw.setPenRadius();
-        n.rect.draw();
+        if (evenLevel) {
+            StdDraw.setPenColor(StdDraw.RED);
+            StdDraw.line(n.p.x(), n.rect.ymin(), n.p.x(), n.rect.ymax());
+        }
+        else {
+            StdDraw.setPenColor(StdDraw.BLUE);
+            StdDraw.line(n.rect.xmin(), n.p.y(), n.rect.xmax(), n.p.y());
+        }
+        
         
         // Traverse the right Nodes
         draw(n.rt, !evenLevel);
