@@ -290,10 +290,10 @@ public class KdTree {
     private static class Node {
         
         // the point
-        private Point2D p;
+        private final Point2D p;
         
         // the axis-aligned rectangle corresponding to this node
-        private RectHV rect;
+        private final RectHV rect;
         
         // the left/bottom subtree
         private Node lb;
