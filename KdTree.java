@@ -280,7 +280,12 @@ public class KdTree {
     public Iterable<Point2D> range(RectHV rect) {
         if (rect == null) throw new java.lang.NullPointerException(
                 "called range() with a null RectHV");
+        
         Stack<Point2D> points = new Stack<>();
+        
+        // Handle KdTree without a root node yet
+        if (root == null) return points;
+        
         Stack<Node> nodes = new Stack<>();
         nodes.push(root);
         while (!nodes.isEmpty()) {
