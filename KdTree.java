@@ -297,7 +297,7 @@ public class KdTree {
             if (rect.contains(tmp.p)) points.push(tmp.p);
             
             /**
-             * Add Nodes containing promising rectanges to our nodes stack.
+             * Add Nodes containing promising rectangles to our nodes stack.
              * 
              * Note that, since we don't push Nodes onto the stack unless
              * their rectangles intersect with the given RectHV, we achieve
