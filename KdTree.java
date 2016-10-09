@@ -338,7 +338,8 @@ public class KdTree {
         if (n.p.equals(p)) return p;
         
         // Determine if the current Node's point beats the existing champion
-        if (n.p.distanceTo(p) < champion.distanceTo(p)) champion = n.p;
+        if (n.p.distanceSquaredTo(p) < champion.distanceSquaredTo(p))
+            champion = n.p;
         
         /**
          * Calculate the distance from the search point to the current
@@ -368,7 +369,8 @@ public class KdTree {
             champion = nearest(n.lb, p, champion, !evenLevel);
             
             // Since champion may have changed, recalculate distance
-            if (champion.distanceTo(p) >= Math.abs(toPartitionLine)) {
+            if (champion.distanceSquaredTo(p) >=
+                    toPartitionLine * toPartitionLine) {
                 champion = nearest(n.rt, p, champion, !evenLevel);
             }
         }
@@ -386,7 +388,8 @@ public class KdTree {
             champion = nearest(n.rt, p, champion, !evenLevel);
             
             // Since champion may have changed, recalculate distance
-            if (champion.distanceTo(p) >= Math.abs(toPartitionLine)) {
+            if (champion.distanceSquaredTo(p) >=
+                    toPartitionLine * toPartitionLine) {
                 champion = nearest(n.lb, p, champion, !evenLevel);
             }
         }
