@@ -416,14 +416,14 @@ public class KdTree {
         }
         
         private void updatePoint(Point2D newPoint, boolean evenLevel) {
-            this.p = newPoint;
+            p = newPoint;
             
-            dist = this.given.distanceTo(this.p);
+            dist = given.distanceTo(p);
             
             if (evenLevel) {
-                toPartitionLine = this.given.x() - this.p.x();
+                toPartitionLine = given.x() - p.x();
             }
-            else toPartitionLine = this.given.y() - this.p.y();
+            else toPartitionLine = given.y() - p.y();
             
             /**
              * Determine whether the given point would be to the left or 
