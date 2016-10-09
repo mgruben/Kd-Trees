@@ -312,8 +312,47 @@ public class KdTree {
     public Point2D nearest(Point2D p) {
         if (p == null) throw new java.lang.NullPointerException
             ("called contains() with a null Point2D");
+        if (isEmpty()) return null;
+        PointDistance start = new PointDistance(null, Double.MAX_VALUE);
+        return nearest(root, p, start, true);
+    }
+    
+    private Point2D nearest(Node n, Point2D given, Point2D closestPoint,
+            double closestDistance, boolean evenLevel) {
         
-        return new Point2D(0,0);
+        // Handle the given point exactly overlapping a point in the BST
+        if (n.p.equals(given)) return n.p;
+        
+        // Check and update the current best distance
+        double currentDistance = given.distanceTo(n.p);
+        if (currentDistance < closestDistance) {
+            closestPoint = n.p;
+            closestDistance = currentDistance;
+        }
+        
+        // Determine on which side of the Node the given point lies
+        double cmp;
+        if (evenLevel) {
+            cmp = given.x() - n.p.x();
+        }
+        else cmp = given.y() - n.p.y();
+        
+        /**
+         * Traverse the BST, taking the most likely paths first, in the hopes
+         * that paths which may, earlier, appear to contain a closer point,
+         * won't be traveled if later it becomes clear that they can't beat
+         * the current "champion".
+         */
+        if (cmp < 0 && evenLevel) {
+            closestPoint = nearest(n.lb, given, closestPoint,
+                    closestDistance, !evenLevel);
+        }
+        else if (cmp < 0 && !evenLevel) {}
+        else if (cmp > 0 && evenLevel) {}
+        else if (cmp > 0 && !evenLevel) {}
+        else if (!n.p.equals(given)) {}
+        
+        return closestPoint;
     }
     
     private static class Node {
@@ -334,8 +373,38 @@ public class KdTree {
             this.p = p;
             rect = new RectHV(coords[0], coords[1], coords[2], coords[3]);
         }
+    }
+    
+    private static class PointPair {
+        private final Point2D given;
+        private final Point2D p;
+        private final double dist;
+        private final boolean isLB;
         
-        
+        private PointPair(Point2D given, Point2D p, boolean evenLevel) {
+            this.given = given;
+            this.p = p;
+            
+            dist = this.given.distanceTo(this.p);
+            
+            double cmp;
+            if (evenLevel) {
+                cmp = this.given.x() - this.p.x();
+            }
+            else cmp = this.given.y() - this.p.y();
+            
+            // Handle given point to the left or bottom of Point2D p
+            if (cmp < 0) isLB = true;
+            
+            /**
+             * When the given point is not to the left or bottom of p,
+             * we need to check the right Node.
+             * 
+             * This is because, as in insert() and as per the checklist,
+             * these "ties" are resolved in favor of the right subtree.
+             */
+            else isLB = false;
+        }
     }
     
     /**
