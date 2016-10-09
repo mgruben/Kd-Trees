@@ -360,16 +360,32 @@ public class KdTree {
         }
         else toPartitionLine = p.y() - n.p.y();
         
-        
-
+        /**
+         * Handle the search point being to the left of or below
+         * the current Node's point.
+         */
         if (toPartitionLine < 0) {
             champion = nearest(n.lb, p, champion, !evenLevel);
+            
+            // Since champion may have changed, recalculate distance
             if (champion.distanceTo(p) >= Math.abs(toPartitionLine)) {
                 champion = nearest(n.rt, p, champion, !evenLevel);
             }
         }
+        /**
+         * Handle the search point being to the right of or above
+         * the current Node's point.
+         * 
+         * Note that, since insert() above breaks point comparison ties
+         * by placing the inserted point on the right branch of the current
+         * Node, traversal must also break ties by going to the right branch
+         * of the current Node (i.e. to the right or top, depending on
+         * the level of the current Node).
+         */
         else {
             champion = nearest(n.rt, p, champion, !evenLevel);
+            
+            // Since champion may have changed, recalculate distance
             if (champion.distanceTo(p) >= Math.abs(toPartitionLine)) {
                 champion = nearest(n.lb, p, champion, !evenLevel);
             }
